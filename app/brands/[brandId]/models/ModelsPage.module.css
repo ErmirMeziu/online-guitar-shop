@@ -1,0 +1,118 @@
+.container {
+  padding: 2rem;
+  background-color: #f0f4f8;
+  min-height: 100vh;
+  max-width: 1000px;
+  margin: 0 auto;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #222f3e;
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.searchInput {
+  display: block;
+  width: 100%;
+  max-width: 420px;
+  margin: 0 auto 2rem auto;
+  padding: 0.75rem 1.2rem;
+  border-radius: 10px;
+  border: 1.8px solid #a9b8c4;
+  font-size: 1.1rem;
+  transition: border-color 0.25s ease;
+}
+
+.searchInput:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 6px rgba(59, 130, 246, 0.5);
+}
+
+.modelGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(240px,1fr));
+  gap: 1.8rem;
+}
+
+.modelCard {
+  background: #fff;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgb(0 0 0 / 0.07);
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.modelCard:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 15px 30px rgb(0 0 0 / 0.12);
+}
+
+.modelImageWrapper {
+  width: 100%;
+  height: 140px; /* fixed height smaller than before */
+  overflow: hidden;
+  border-bottom: 1px solid #ddd;
+  border-radius: 12px 12px 0 0;
+}
+
+.modelImage {
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* use 'contain' instead of 'cover' so the entire guitar fits inside */
+  transition: transform 0.4s ease;
+}
+
+.modelCard:hover .modelImage {
+  transform: scale(1.05);
+}
+
+.modelContent {
+  padding: 1rem 1.2rem;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.modelName {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 0.5rem 0;
+  line-height: 1.2;
+}
+
+.modelType {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  margin-bottom: 0.8rem;
+}
+
+.modelPrice {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #2563eb;
+  margin-top: auto;
+}
+
+.modelDescription {
+  font-size: 0.95rem;
+  color: #475569;
+  margin-top: 0.75rem;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
