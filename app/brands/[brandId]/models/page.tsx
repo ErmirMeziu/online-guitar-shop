@@ -24,6 +24,7 @@ export default function ModelsPage() {
   const brandId = pathname.split("/")[2];
 
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedType, setSelectedType] = useState("");
 
   const { loading, error, data } = useQuery(GET_BRAND_MODELS, {
     variables: { id: brandId, sortBy: { field: "name", order: "ASC" } },
@@ -32,54 +33,78 @@ export default function ModelsPage() {
   if (loading) return <p>Loading models...</p>;
   if (error) return <p>Error loading models 😢</p>;
 
-  const filteredModels = data.findBrandModels.filter((model: any) =>
-    model.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  console.log("Model data from API:", data.findBrandModels);
 
- return (
-  <div className={styles.container}>
-    <h1 className={styles.title}>Guitar Models for Brand {brandId}</h1>
+  const filteredModels = data.findBrandModels
+    .filter((model: any) =>
+      model.name.toLowerCase().includes(searchTerm.toLowerCase())
+    )
+    .filter((model: any) =>
+      selectedType === "" ? true : model.type?.toLowerCase() === selectedType
+    );
 
-    <input
-      type="text"
-      placeholder="Search models..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      className={styles.searchInput}
-    />
+  return (
+    <div className={styles.container}>
+      <h1 className={styles.title}>Guitar Models for Brand {brandId}</h1>
 
-    <div className={styles.modelGrid}>
-      {filteredModels.map((model: any) => (
-        <div
-          key={model.id}
-          className={styles.modelCard}
-          onClick={() => router.push(`/brands/${brandId}/models/${model.id}`)}
-          role="button"
-          tabIndex={0}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter' || e.key === ' ') {
-              router.push(`/brands/${brandId}/models/${model.id}`);
-            }
-          }}
-        >
-          <div className={styles.modelImageWrapper}>
-            <img
-              src={model.image && model.image.startsWith("http") ? model.image : "/placeholder-guitar.png"}
-              alt={model.name}
-              className={styles.modelImage}
-              loading="lazy"
-            />
+      <div className={styles.controlsRow}>
+      <input
+        type="text"
+        placeholder="Search models..."
+        value={searchTerm}
+        onChange={(e) => setSearchTerm(e.target.value)}
+        className={styles.searchInput}
+      />
+
+      <select
+        value={selectedType}
+        onChange={(e) => setSelectedType(e.target.value)}
+        className={styles.filterSelect}
+      >
+        <option value="">All Types</option>
+        <option value="electric">Electric</option>
+        <option value="acoustic">Acoustic</option>
+        <option value="bass">Bass</option>
+        <option value="classical">Classical</option>
+      </select>
+      </div>
+
+
+      <div className={styles.modelGrid}>
+        {filteredModels.map((model: any) => (
+          <div
+            key={model.id}
+            className={styles.modelCard}
+            onClick={() => router.push(`/brands/${brandId}/models/${model.id}`)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                router.push(`/brands/${brandId}/models/${model.id}`);
+              }
+            }}
+          >
+            <div className={styles.modelImageWrapper}>
+              <img
+                src={
+                  model.image && model.image.startsWith("http")
+                    ? model.image
+                    : "/placeholder-guitar.png"
+                }
+                alt={model.name}
+                className={styles.modelImage}
+                loading="lazy"
+              />
+            </div>
+            <div className={styles.modelContent}>
+              <h3 className={styles.modelName}>{model.name}</h3>
+              <p className={styles.modelType}>{model.type}</p>
+              <p className={styles.modelDescription}>{model.description}</p>
+              <p className={styles.modelPrice}>${model.price}</p>
+            </div>
           </div>
-          <div className={styles.modelContent}>
-            <h3 className={styles.modelName}>{model.name}</h3>
-            <p className={styles.modelType}>{model.type}</p>
-            <p className={styles.modelDescription}>{model.description}</p>
-            <p className={styles.modelPrice}>${model.price}</p>
-          </div>
-        </div>
-      ))}
+        ))}
+      </div>
     </div>
-  </div>
-);
-
+  );
 }
